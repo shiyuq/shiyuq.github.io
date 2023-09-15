@@ -19,12 +19,12 @@
     <meta name="description" content="JavaScript的发展史JavaScript的发展壮大在JavaScript诞生之初只是作为一个脚本语言来使用，主要是做一些简单的表单校验等，因为代码量不多，所以是直接跟html写在一个文件里面，并且用script标签包裹 12345&#x2F;&#x2F; index.html&lt;script&gt;    var name &#x3D; &amp;#x27;shiyuq&amp;#x27;    var age &#x3D; 18&lt;&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈CJS和ESM">
-<meta property="og:url" content="https://shiyuq.github.io/2023/09/07/hello-world/index.html">
+<meta property="og:url" content="https://shiyuq.github.io/2023/09/08/hello-world/index.html">
 <meta property="og:site_name" content="shiyuq">
 <meta property="og:description" content="JavaScript的发展史JavaScript的发展壮大在JavaScript诞生之初只是作为一个脚本语言来使用，主要是做一些简单的表单校验等，因为代码量不多，所以是直接跟html写在一个文件里面，并且用script标签包裹 12345&#x2F;&#x2F; index.html&lt;script&gt;    var name &#x3D; &amp;#x27;shiyuq&amp;#x27;    var age &#x3D; 18&lt;&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-09-07T01:00:51.747Z">
-<meta property="article:modified_time" content="2023-09-07T01:00:51.748Z">
+<meta property="article:published_time" content="2023-09-08T12:07:45.479Z">
+<meta property="article:modified_time" content="2023-09-08T12:07:45.479Z">
 <meta property="article:author" content="shiyuq">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -131,18 +131,6 @@
             </li>
           
         
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
         
           <li class="nav-item" id="search-btn">
             <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
@@ -183,8 +171,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-09-07 09:00" pubdate>
-          2023年9月7日 上午
+        <time datetime="2023-09-08 20:07" pubdate>
+          2023年9月8日 晚上
         </time>
       </span>
     
@@ -195,7 +183,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          11k 字
+          12k 字
         
       </span>
     
@@ -206,7 +194,7 @@
         
         
         
-          90 分钟
+          104 分钟
         
       </span>
     
@@ -415,6 +403,21 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span><br><br><span class="hljs-comment">// 同时输入默认方法和其他变量</span><br><span class="hljs-keyword">import</span> _, &#123;each&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span><br><br><span class="hljs-comment">//对应的export语句</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) &#123;&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">each</span>(<span class="hljs-params">obj, iterator, context</span>) &#123;&#125;<br><br><span class="hljs-keyword">export</span> &#123;each <span class="hljs-keyword">as</span> forEach&#125;<br><br><span class="hljs-comment">// 如果你想输出默认值</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-number">18</span><br><span class="hljs-comment">// 这里实际是有一个default变量，然后把18赋值给了变量default，所以没有报错</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="模块加载的实质"><a href="#模块加载的实质" class="headerlink" title="模块加载的实质"></a>模块加载的实质</h4><p>CommonJS模块输出的是一个值的浅拷贝，而ES6模块输出的是值的引用，它在遇到import命令时，不去执行模块，而是生成一个动态的只读引用，等真的需要用到的时候再去模块中取值，所以ES6时动态引用，并不会缓存值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 举个栗子</span><br><span class="hljs-keyword">let</span> name = <span class="hljs-string">&#x27;shiyuq&#x27;</span> <span class="hljs-comment">// 值引用</span><br><span class="hljs-keyword">const</span> <span class="hljs-built_in">exports</span> = &#123;<span class="hljs-attr">name</span>: name&#125; <span class="hljs-comment">// 此时开辟了一个堆内存存储并且赋值给exports变量</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-built_in">exports</span>.<span class="hljs-property">name</span>) <span class="hljs-comment">// shiyuq</span><br><span class="hljs-built_in">exports</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;jenny&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-built_in">exports</span>.<span class="hljs-property">name</span>) <span class="hljs-comment">// jenny</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name) <span class="hljs-comment">// shiyuq</span><br><br><span class="hljs-comment">// 再看一个</span><br><span class="hljs-keyword">let</span> <span class="hljs-variable language_">module</span> = &#123;<span class="hljs-attr">exports</span>: &#123;&#125;&#125;<br><span class="hljs-keyword">const</span> moduleA = (<span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable language_">module</span>, <span class="hljs-built_in">exports</span>, <span class="hljs-built_in">require</span></span>) &#123;<br>    <span class="hljs-keyword">let</span> name = <span class="hljs-string">&#x27;shiyuq&#x27;</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-title function_">setName</span> = (<span class="hljs-params">n</span>) =&gt; name = n<br>    <span class="hljs-keyword">const</span> <span class="hljs-title function_">getName</span> = (<span class="hljs-params"></span>) =&gt; name<br>	<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>		name,<br>        setName,<br>        getName<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span><br>&#125;)(<span class="hljs-variable language_">module</span>, <span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>, &#123;&#125;)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(moduleA) <span class="hljs-comment">// &#123;name: &#x27;shiyuq&#x27;, getName: f, setName: f&#125;</span><br><br>moduleA.<span class="hljs-title function_">getName</span>() <span class="hljs-comment">// shiyuq</span><br>moduleA.<span class="hljs-property">name</span> <span class="hljs-comment">// shiyuq</span><br><br>moduleA.<span class="hljs-title function_">setName</span>(<span class="hljs-string">&#x27;jenny&#x27;</span>)<br>moduleA.<span class="hljs-title function_">getName</span>() <span class="hljs-comment">// jenny</span><br>moduleA.<span class="hljs-property">name</span> <span class="hljs-comment">// shiyuq</span><br></code></pre></td></tr></table></figure>
+
+<p>现在大家应该了解了为什么内部的变化不会影响到外部的值了，但是这个也仅仅只是针对的原始值，如果是引用值那就会跟着变化了</p>
+<p>但是ES6的模块运行机制和CommonJS不一样，它在遇到import时，只是生成一个动态的只读引用，有点像linux里面的软链接，如果原始值变了，import输入的值也会跟着变化</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// a.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">let</span> counter = <span class="hljs-number">3</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">incCounter</span>(<span class="hljs-params"></span>) &#123;<br>    counter++<br>&#125;<br><br><span class="hljs-comment">// b.js</span><br><span class="hljs-keyword">import</span> &#123;counter, incCounter&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;a.js&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(counter) <span class="hljs-comment">// 3</span><br><span class="hljs-title function_">incCounter</span>()<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(counter) <span class="hljs-comment">// 4</span><br></code></pre></td></tr></table></figure>
+
+<p>可见ES6模块不会缓存运行结果，而是动态获取</p>
+<h4 id="ES6模块的循环加载"><a href="#ES6模块的循环加载" class="headerlink" title="ES6模块的循环加载"></a>ES6模块的循环加载</h4><p>ES6模块是动态引用，所以那些变量并不会被缓存，而是成为一个指向被加载模块的引用，只要你作为开发者能确保它真的能取到值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// a.js</span><br><span class="hljs-keyword">import</span> &#123;bar&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;b.js&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;a.js&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(bar)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-string">&#x27;foo&#x27;</span><br><br><span class="hljs-comment">// b.js</span><br><span class="hljs-keyword">import</span> &#123;foo&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;a.js&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;b.js&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(foo)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> bar = <span class="hljs-string">&#x27;bar&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>上面a模块中引用b，b模块中引用a，造成循环引用，现在执行<code>node a.js</code>查看运行结果</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">b</span><span class="hljs-selector-class">.js</span><br>ReferenceError: foo is not defined<br></code></pre></td></tr></table></figure>
+
+<p>这是因为在执行a模块的时候，其中引入了b模块，去b模块中加载，首先打印b.js，然后打印foo，但是此时a模块中并未输出foo接口，所以报错</p>
+<p>大家也可以写一个 简单的demo，测试一下ES6打包后的代码，这样可以更加清晰的了解ES6和CommonJS的不同之处</p>
 
                 
               </div>
@@ -433,7 +436,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>浅谈CJS和ESM</div>
-      <div>https://shiyuq.github.io/2023/09/07/hello-world/</div>
+      <div>https://shiyuq.github.io/2023/09/08/hello-world/</div>
     </div>
     <div class="license-meta">
       
@@ -445,7 +448,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年9月7日</div>
+          <div>2023年9月8日</div>
         </div>
       
       
