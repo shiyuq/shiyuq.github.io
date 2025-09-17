@@ -1,0 +1,742 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shiyuq">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="如何安装nestjs因为后续会选择nestjs创建不同的应用，所以推荐安装nestjs的官方生成工具 12345npm i -g @nestjs&#x2F;clinest new project-namenest new project-name --strict 因为nestjs完全支持使用typescript构建，所以传递 –strict 可以使项目有更加严格的功能集 创建提示如下： 123456789">
+<meta property="og:type" content="article">
+<meta property="og:title" content="上手nestjs">
+<meta property="og:url" content="https://shiyuq.github.io/2025/09/12/%E4%B8%8A%E6%89%8Bnestjs/index.html">
+<meta property="og:site_name" content="shiyuq">
+<meta property="og:description" content="如何安装nestjs因为后续会选择nestjs创建不同的应用，所以推荐安装nestjs的官方生成工具 12345npm i -g @nestjs&#x2F;clinest new project-namenest new project-name --strict 因为nestjs完全支持使用typescript构建，所以传递 –strict 可以使项目有更加严格的功能集 创建提示如下： 123456789">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-12T08:45:44.000Z">
+<meta property="article:modified_time" content="2025-09-15T09:41:53.647Z">
+<meta property="article:author" content="shiyuq">
+<meta property="article:tag" content="nestjs">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>上手nestjs - shiyuq</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"shiyuq.github.io","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>shiyuq</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://fluid.s3.bitiful.net/bg/vdysjx.png?w=1920&fmt=webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="上手nestjs"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-12 16:45" pubdate>
+          2025年9月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          51 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">上手nestjs</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="如何安装nestjs"><a href="#如何安装nestjs" class="headerlink" title="如何安装nestjs"></a>如何安装nestjs</h2><p>因为后续会选择nestjs创建不同的应用，所以推荐安装nestjs的官方生成工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm i -g @nestjs/cli<br><br>nest new project-name<br><br>nest new project-name --strict<br></code></pre></td></tr></table></figure>
+<p>因为nestjs完全支持使用typescript构建，所以传递 <strong>–strict</strong> 可以使项目有更加严格的功能集</p>
+<p>创建提示如下：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs gradle">PS C:\nestjs&gt; nest <span class="hljs-keyword">new</span> <span class="hljs-keyword">project</span>-name --strict<br>✨  We will scaffold your app in a few seconds..<br><br>✔ Which <span class="hljs-keyword">package</span> manager would you ❤️  to use? npm<br>CREATE <span class="hljs-keyword">project</span>-name/.prettierrc (<span class="hljs-number">54</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name/eslint.config.mjs (<span class="hljs-number">869</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name/nest-cli.json (<span class="hljs-number">179</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name/<span class="hljs-keyword">package</span>.json (<span class="hljs-number">2054</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name/README.md (<span class="hljs-number">5126</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name/tsconfig.build.json (<span class="hljs-number">101</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name/tsconfig.json (<span class="hljs-number">699</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/src/</span>app.controller.ts (<span class="hljs-number">286</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/src/</span>app.module.ts (<span class="hljs-number">259</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/src/</span>app.service.ts (<span class="hljs-number">150</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/src/m</span>ain.ts (<span class="hljs-number">236</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/src/</span>app.controller.spec.ts (<span class="hljs-number">639</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/test/</span>jest-e2e.json (<span class="hljs-number">192</span> bytes)<br>CREATE <span class="hljs-keyword">project</span>-name<span class="hljs-regexp">/test/</span>app.e2e-spec.ts (<span class="hljs-number">699</span> bytes)<br><br>▹▹▹▹▹ Installation in progress... ☕<br><br>✔ Installation in progress... ☕<br><br>🚀  Successfully created <span class="hljs-keyword">project</span> <span class="hljs-keyword">project</span>-name<br>👉  Get started with the following commands:<br><br>$ cd <span class="hljs-keyword">project</span>-name<br>$ npm run start<br><br><br>                          Thanks <span class="hljs-keyword">for</span> installing Nest 🙏<br>                 Please consider donating to our open collective<br>                        to help us maintain <span class="hljs-keyword">this</span> <span class="hljs-keyword">package</span>.<br></code></pre></td></tr></table></figure>
+
+<p>默认此命令是安装好所有的依赖，所以你可以直接进入到project-name目录并直接输入<code>npm run start</code>运行项目</p>
+<p>当终端出现如下命令，即表示项目启动成功</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gradle">PS C:\nestjs\<span class="hljs-keyword">project</span>-name&gt; npm run start<br><br>&gt; <span class="hljs-keyword">project</span>-name@<span class="hljs-number">0.0</span>.<span class="hljs-number">1</span> start<br>&gt; nest start<br><br>[Nest] <span class="hljs-number">20636</span>  - <span class="hljs-number">2025</span><span class="hljs-regexp">/09/</span><span class="hljs-number">13</span> <span class="hljs-number">18</span>:<span class="hljs-number">32</span>:<span class="hljs-number">20</span>     LOG [NestFactory] Starting Nest application...<br>[Nest] <span class="hljs-number">20636</span>  - <span class="hljs-number">2025</span><span class="hljs-regexp">/09/</span><span class="hljs-number">13</span> <span class="hljs-number">18</span>:<span class="hljs-number">32</span>:<span class="hljs-number">20</span>     LOG [InstanceLoader] AppModule <span class="hljs-keyword">dependencies</span> initialized +<span class="hljs-number">9</span>ms<br>[Nest] <span class="hljs-number">20636</span>  - <span class="hljs-number">2025</span><span class="hljs-regexp">/09/</span><span class="hljs-number">13</span> <span class="hljs-number">18</span>:<span class="hljs-number">32</span>:<span class="hljs-number">20</span>     LOG [RoutesResolver] AppController &#123;/&#125;: +<span class="hljs-number">4</span>ms<br>[Nest] <span class="hljs-number">20636</span>  - <span class="hljs-number">2025</span><span class="hljs-regexp">/09/</span><span class="hljs-number">13</span> <span class="hljs-number">18</span>:<span class="hljs-number">32</span>:<span class="hljs-number">20</span>     LOG [RouterExplorer] Mapped &#123;/, GET&#125; route +<span class="hljs-number">3</span>ms<br>[Nest] <span class="hljs-number">20636</span>  - <span class="hljs-number">2025</span><span class="hljs-regexp">/09/</span><span class="hljs-number">13</span> <span class="hljs-number">18</span>:<span class="hljs-number">32</span>:<span class="hljs-number">20</span>     LOG [NestApplication] Nest application successfully started +<span class="hljs-number">2</span>ms<br></code></pre></td></tr></table></figure>
+
+<p>表示nest正在启动nest应用，然后初始化了AppModule，初始化了一个Appcontroller，路由为 &#x2F;，然后 &#x2F; 下有一个 GET 方法，最终nest应用成功启动，这意味着，我们可以在127.0.0.1:3000&#x2F; 直接发送一个GET请求，返回了 “Hello World!”</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs 1c">目录结构如下：<br>src<br> <span class="hljs-string">|</span><br> —— app.controller.spec.ts （controller单元测试）<br> <span class="hljs-string">|</span><br> —— app.controller.ts （controller文件）<br> <span class="hljs-string">|</span><br> —— app.module.ts （应用的根模块文件）<br> <span class="hljs-string">|</span><br> —— app.service.ts （具有单一方法的基本服务）<br> <span class="hljs-string">|</span><br> —— main.ts （应用的入口文件）<br><br></code></pre></td></tr></table></figure>
+
+
+<h2 id="如何编写nestjs代码"><a href="#如何编写nestjs代码" class="headerlink" title="如何编写nestjs代码"></a>如何编写nestjs代码</h2><p>首先我们通过<code>npm run start:dev</code>可以运行服务并监视文件中的更改</p>
+<p>这样当我们编写nestjs代码的时候，保存文件后，nestjs将会重新编译，提升开发效率</p>
+<p>nestjs推荐安装 <code>eslint</code> 和 <code>prettier</code> 两个包来统一开发的 lint 和 format</p>
+<h2 id="如何debug代码"><a href="#如何debug代码" class="headerlink" title="如何debug代码"></a>如何debug代码</h2><h3 id="方式一：vscode断点调试"><a href="#方式一：vscode断点调试" class="headerlink" title="方式一：vscode断点调试"></a>方式一：vscode断点调试</h3><p>这里以vscode为例，通常用来开发ts相关的项目</p>
+<p>我们来到运行和调试一栏，主动添加配置，选择 nodejs:通过npm启动</p>
+<p>然后在configurations中就会出现以下配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs JSON"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Launch via NPM&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;request&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;launch&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;runtimeArgs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>	<span class="hljs-string">&quot;run-script&quot;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-string">&quot;debug&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;runtimeExecutable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npm&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;skipFiles&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>	<span class="hljs-string">&quot;&lt;node_internals&gt;/**&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>此时我们可以修改配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs JSON"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Launch nestjs&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;request&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;launch&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;runtimeArgs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>	<span class="hljs-string">&quot;run&quot;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-string">&quot;start:dev&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;runtimeExecutable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npm&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;skipFiles&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>	<span class="hljs-string">&quot;&lt;node_internals&gt;/**&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>此时我们即可通过点击 <code>debug nestjs</code> 左侧的绿色执行按钮启动项目并支持断点调试</p>
+<h3 id="方式二：官方的devtools"><a href="#方式二：官方的devtools" class="headerlink" title="方式二：官方的devtools"></a>方式二：官方的devtools</h3><p>需要付费</p>
+<p>主要是查看模块间的依赖关系以及是否有循环依赖</p>
+<h2 id="了解nestjs的基础概念"><a href="#了解nestjs的基础概念" class="headerlink" title="了解nestjs的基础概念"></a>了解nestjs的基础概念</h2><h3 id="Controllers"><a href="#Controllers" class="headerlink" title="Controllers"></a>Controllers</h3><p>控制器：主要负责处理传入的请求并将响应发送回客户端</p>
+<p>你可以理解为路由的入口，通过不同的模块申明不同的入口，例如user模块，就会有以下restful资源</p>
+<ul>
+<li>【获取所有用户信息】GET &#x2F;user</li>
+<li>【获取单个用户信息】GET &#x2F;user&#x2F;:id</li>
+<li>【新增某个用户信息】POST &#x2F;user&#x2F;:id</li>
+<li>【更新某个用户信息】PATCH &#x2F;user&#x2F;:id</li>
+<li>【删除某个用户信息】DELETE &#x2F;user&#x2F;:id</li>
+</ul>
+<p>在此资源之上，你可以通过装饰器来申明通过什么路径来调用、获取请求参数、重定向、错误处理等等</p>
+<h3 id="providers"><a href="#providers" class="headerlink" title="providers"></a>providers</h3><p>提供程序：nestjs的核心概念，很多nestjs的基础类都是被看作是提供程序，例如 services, repositories, factories, helpers。关键的思想是依赖注入（DI）</p>
+<ol>
+<li>provider不是手动new出来的，而是由nest的 IOC 容器来负责provider的实例化以及生命周期的管理</li>
+<li>每个provider只需要负责完成它自己的功能，控制器只负责路由，逻辑复用和扩展交给provider</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>配置方式</th>
+<th>示例</th>
+<th>使用场景</th>
+<th>设计理念</th>
+<th>总结</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>useClass</td>
+<td><code>[ &#123; provide: Token, useClass: Logger &#125; ]</code></td>
+<td>用某个类作为实现，常用于替换具体实现<br>开发环境用consoleLogger，<br>生产用fileLogger</td>
+<td>面向接口编程。只要 token 一致，背后实现可随时切换。</td>
+<td>面向抽象，随时换实现</td>
+</tr>
+<tr>
+<td>useValue</td>
+<td><code>[ &#123; provide: Token, useValue: &#123; db: &#39;mysql&#39;, port: 3306 &#125; &#125; ]</code></td>
+<td>注入常量、配置项、工具函数等</td>
+<td>值即是服务，直接把一个对象或函数注册到 IoC 容器，避免硬编码。</td>
+<td>配置即依赖，简单直接</td>
+</tr>
+<tr>
+<td>useFactory</td>
+<td><code>[ &#123; provide: Token, useFactory: (config: ConfigService) =&gt; new DB(config.dbUrl), inject: [ConfigService] &#125; ]</code></td>
+<td>构造逻辑复杂，依赖其他 provider 的场景。</td>
+<td>工厂模式 + DI。容器只管执行工厂函数，返回什么就注入什么。</td>
+<td>动态构造，灵活注入</td>
+</tr>
+<tr>
+<td>useExisting</td>
+<td><code>[ &#123; provide: Token, useExisting: ConsoleLogger &#125; ]</code></td>
+<td>给已有 provider 起别名。  <br>例：AppLoggerToken 与Token 指向同一实例。</td>
+<td>“指针”绑定。多个 token 引用同一 provider，避免重复实例化。</td>
+<td>别名绑定，复用实例</td>
+</tr>
+</tbody></table>
+<h3 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h3><p>modules：提供 Nest 用于有效组织和管理应用程序结构的元数据<br>providers：Nest 注入器将实例化的提供程序，这些程序至少可以在本模块中共享<br>controllers：本模块中定义的、需要实例化的控制器集合<br>imports：本模块所需的提供程序的模块列表（从其他模块export之后再在本模块import）<br>exports：这些提供程序由本模块提供，并应在导入本模块的其他模块中可用。您可以使用提供程序本身，也可以只使用其标记（提供值）</p>
+<h3 id="Middleware"><a href="#Middleware" class="headerlink" title="Middleware"></a>Middleware</h3><p>中间件是在路由处理程序之前调用的函数，中间件函数可以访问请求和响应对象，以及应用程序请求-响应周期中的 <code>next()</code> 中间件函数</p>
+<p>几乎等同于express的中间件</p>
+<h3 id="Exception-filters"><a href="#Exception-filters" class="headerlink" title="Exception filters"></a>Exception filters</h3><p>Exception filters：负责处理应用程序中所有未处理的异常<br>通常用来处理HTTP标准异常、自定义异常、业务异常以及未捕捉到的异常</p>
+<h3 id="Pipes"><a href="#Pipes" class="headerlink" title="Pipes"></a>Pipes</h3><p>pipes的作用</p>
+<ol>
+<li>转换：将输入数据转换为所需的形式（例如，从字符串转换为整数）</li>
+<li>验证：评估输入数据，如果有效，只需将其原封不动地传递;否则，抛出异常</li>
+</ol>
+<h3 id="Guards"><a href="#Guards" class="headerlink" title="Guards"></a>Guards</h3><p>guards：守卫是一个用 <code>@Injectable()</code> 装饰器注释的类，它实现了 <code>CanActivate</code> 接口。</p>
+<p>作用：只有一个责任。它们确定给定请求是否由路由处理程序处理，具体取决于运行时存在的某些条件（如权限、角色、ACL 等）。这通常称为授权。</p>
+<h3 id="Interceptors"><a href="#Interceptors" class="headerlink" title="Interceptors"></a>Interceptors</h3><p>Interceptors：拦截器是一个用 <code>@Injectable()</code> 装饰器注释的类，实现了 <code>NestInterceptor</code> 接口。</p>
+<p>功能：</p>
+<ol>
+<li>在方法执行之前&#x2F;之后绑定额外的逻辑</li>
+<li>转换从函数返回的结果</li>
+<li>转换从函数抛出的异常</li>
+<li>扩展基本函数行为</li>
+<li>根据特定条件完全覆盖函数（例如，用于缓存目的）</li>
+</ol>
+<h2 id="了解nestjs核心模块的执行顺序"><a href="#了解nestjs核心模块的执行顺序" class="headerlink" title="了解nestjs核心模块的执行顺序"></a>了解nestjs核心模块的执行顺序</h2><p>【nest应用启动时初始化】</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant AppModule
+    participant NestFactory
+    participant IoCContainer as IoC 容器
+    participant Provider
+    participant Controller
+
+    NestFactory-&gt;&gt;AppModule: 读取根模块
+    AppModule-&gt;&gt;NestFactory: 返回 imports/controllers/providers
+    NestFactory-&gt;&gt;IoCContainer: 注册 Providers
+    IoCContainer-&gt;&gt;Provider: 实例化依赖 (构建依赖树)
+    NestFactory-&gt;&gt;Controller: 注册 Controllers &amp; 路由
+    Note over NestFactory,Controller: 应用初始化完成
+
+</code></pre>
+
+<p>【请求生命周期】</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant Client
+    participant Middleware
+    participant Guard
+    participant Interceptor as Interceptor(before)
+    participant Pipe
+    participant Controller
+    participant Service
+    participant InterceptorAfter as Interceptor(after)
+    participant ExceptionFilter
+    participant Response
+
+    Client-&gt;&gt;Middleware: 进入应用
+    Middleware-&gt;&gt;Guard: 继续
+    Guard-&gt;&gt;Interceptor: canActivate 成功
+    Interceptor-&gt;&gt;Pipe: before handler
+    Pipe-&gt;&gt;Controller: 参数验证 &amp; 转换
+    Controller-&gt;&gt;Service: 调用业务逻辑
+    Service--&gt;&gt;Controller: 返回数据
+    Controller-&gt;&gt;InterceptorAfter: 结果返回
+    InterceptorAfter-&gt;&gt;Response: 加工结果后响应
+    Note over Guard,Response: 如果任意阶段抛错 → ExceptionFilter 捕获
+
+</code></pre>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/nestjs/" class="print-no-link">#nestjs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>上手nestjs</div>
+      <div>https://shiyuq.github.io/2025/09/12/上手nestjs/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>shiyuq</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/15/nestjs%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81MONGO%E5%92%8C%E9%AA%8C%E8%AF%81/" title="nestjs接入配置、数据库和验证">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nestjs接入配置、数据库和验证</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/12/hello-world/" title="浅谈CJS和ESM">
+                        <span class="hidden-mobile">浅谈CJS和ESM</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

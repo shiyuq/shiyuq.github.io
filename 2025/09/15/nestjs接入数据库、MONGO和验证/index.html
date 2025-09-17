@@ -1,0 +1,704 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="shiyuq">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="nestjs接入数据库TypeORM 集成安装所需的依赖项 1npm install --save @nestjs&#x2F;typeorm typeorm mysql2   安装完成后，我们可以把 TypeORMModule 导入到 AppModule 中 12345678910111213141516171819import &amp;#123; Module &amp;#125; from &amp;#x27;@nestjs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nestjs接入配置、数据库和验证">
+<meta property="og:url" content="https://shiyuq.github.io/2025/09/15/nestjs%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81MONGO%E5%92%8C%E9%AA%8C%E8%AF%81/index.html">
+<meta property="og:site_name" content="shiyuq">
+<meta property="og:description" content="nestjs接入数据库TypeORM 集成安装所需的依赖项 1npm install --save @nestjs&#x2F;typeorm typeorm mysql2   安装完成后，我们可以把 TypeORMModule 导入到 AppModule 中 12345678910111213141516171819import &amp;#123; Module &amp;#125; from &amp;#x27;@nestjs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-15T12:53:47.000Z">
+<meta property="article:modified_time" content="2025-09-17T08:04:40.928Z">
+<meta property="article:author" content="shiyuq">
+<meta property="article:tag" content="nestjs">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>nestjs接入配置、数据库和验证 - shiyuq</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"shiyuq.github.io","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>shiyuq</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://fluid.s3.bitiful.net/bg/vdysjx.png?w=1920&fmt=webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="nestjs接入配置、数据库和验证"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-15 20:53" pubdate>
+          2025年9月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          93 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">nestjs接入配置、数据库和验证</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="nestjs接入数据库"><a href="#nestjs接入数据库" class="headerlink" title="nestjs接入数据库"></a>nestjs接入数据库</h2><h3 id="TypeORM-集成"><a href="#TypeORM-集成" class="headerlink" title="TypeORM 集成"></a>TypeORM 集成</h3><p>安装所需的依赖项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install --save @nestjs/typeorm typeorm mysql2<br></code></pre></td></tr></table></figure>
+
+
+<p>安装完成后，我们可以把 <strong>TypeORMModule</strong> 导入到 <strong>AppModule</strong> 中</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Module</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">TypeOrmModule</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/typeorm&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">User</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./users/user.entity&#x27;</span>;<br><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;mysql&#x27;</span>,<br>      <span class="hljs-attr">host</span>: <span class="hljs-string">&#x27;localhost&#x27;</span>,<br>      <span class="hljs-attr">port</span>: <span class="hljs-number">3306</span>,<br>      <span class="hljs-attr">username</span>: <span class="hljs-string">&#x27;root&#x27;</span>,<br>      <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;root&#x27;</span>,<br>      <span class="hljs-attr">database</span>: <span class="hljs-string">&#x27;db_nest&#x27;</span>,<br>      <span class="hljs-attr">entities</span>: [<span class="hljs-title class_">User</span>],<br>      <span class="hljs-attr">synchronize</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>  ],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="实体表如何引入"><a href="#实体表如何引入" class="headerlink" title="实体表如何引入"></a>实体表如何引入</h3><p>但是我们发现一个问题，如果表很多怎么办，总不能全部import进来之后写进去</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">User</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./users/user.entity&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Todo</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./todo/todo.entity&#x27;</span>;<br><span class="hljs-comment">// 其他entity实体</span><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;mysql&#x27;</span>,<br>      <span class="hljs-attr">host</span>: <span class="hljs-string">&#x27;localhost&#x27;</span>,<br>      <span class="hljs-attr">port</span>: <span class="hljs-number">3306</span>,<br>      <span class="hljs-attr">username</span>: <span class="hljs-string">&#x27;root&#x27;</span>,<br>      <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;root&#x27;</span>,<br>      <span class="hljs-attr">database</span>: <span class="hljs-string">&#x27;db_nest&#x27;</span>,<br>      <span class="hljs-attr">entities</span>: [<span class="hljs-title class_">User</span>, <span class="hljs-title class_">Todo</span>, <span class="hljs-comment">// 其他实体],</span><br>      <span class="hljs-attr">synchronize</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>  ],<br>&#125;)<br><br><span class="hljs-comment">// 我们也可以自动加载实体</span><br><br><span class="hljs-comment">// 方式一：添加 autoLoadEntities 为 true</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Module</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">TypeOrmModule</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/typeorm&#x27;</span>;<br><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      ...<br>      <span class="hljs-attr">autoLoadEntities</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>  ],<br>&#125;)<br><br><span class="hljs-comment">// 方式二：获取所有项目下的 entity.ts 文件为实体</span><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      ...<br>      <span class="hljs-attr">entities</span>: [__dirname + <span class="hljs-string">&#x27;/**/*.entity&#123;.ts,.js&#125;&#x27;</span>],<br>    &#125;),<br>  ],<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>上面两种方式都可以成功集成TypeORM</p>
+<h3 id="TypeORM如何定义表结构"><a href="#TypeORM如何定义表结构" class="headerlink" title="TypeORM如何定义表结构"></a>TypeORM如何定义表结构</h3><p>我们主要了解一下TypeORM的主要内容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Entity</span>, <span class="hljs-title class_">Column</span>, <span class="hljs-title class_">PrimaryGeneratedColumn</span>, <span class="hljs-title class_">OneToMany</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;typeorm&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Photo</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../photos/photo.entity&#x27;</span>;<br><br><span class="hljs-meta">@Entity</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>  <span class="hljs-meta">@PrimaryGeneratedColumn</span>()<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br><br>  <span class="hljs-meta">@Column</span>()<br>  <span class="hljs-attr">firstName</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-meta">@Column</span>()<br>  <span class="hljs-attr">lastName</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-meta">@Column</span>(&#123; <span class="hljs-attr">default</span>: <span class="hljs-literal">true</span> &#125;)<br>  <span class="hljs-attr">isActive</span>: <span class="hljs-built_in">boolean</span>;<br><br>  <span class="hljs-meta">@OneToMany</span>(<span class="hljs-function"><span class="hljs-params">type</span> =&gt;</span> <span class="hljs-title class_">Photo</span>, <span class="hljs-function"><span class="hljs-params">photo</span> =&gt;</span> photo.<span class="hljs-property">user</span>)<br>  <span class="hljs-attr">photos</span>: <span class="hljs-title class_">Photo</span>[];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里就定义了一个<strong>users</strong>表，如果你想要自定义表名称，可以在@Entity(‘user’)中添加 <code>user</code>，这样就是加载 user 表。</p>
+<p>主要涉及到的是主键列，普通列，外键列（一对一、一对多、多对一、多对多），这里表示 <code>users</code> 表中的 <code>photo</code> 字段，关联到的是 <code>Photo</code> 实体，也就是 <code>photos</code> 表，如果它没有显示指定，然后是一对多的关系，表示一个用户会有多张照片，关联的字段是 <code>photos</code> 表中的 <code>user</code> 字段</p>
+<p>在column装饰器中有很多有趣的属性，例如字段类型，字段名称，字段长度，是否为空，默认值等等，基本跟数据表的属性差不太多。</p>
+<h3 id="外键绑定的注意点"><a href="#外键绑定的注意点" class="headerlink" title="外键绑定的注意点"></a>外键绑定的注意点</h3><blockquote>
+<p>我们需要注意以下两种情况<br>1：级联删除<br>默认我们在有外键关联的数据表中，不会去主动设置cascade为true、onDelete为CASCADE<br>因为一旦设置过，删除数据时，外键关联到的数据也会被删除</p>
+<p>2：级联查询<br>默认我们在查询数据的时候，有的时候我们并不希望将外键关联的数据给查询出来，所以默认查询单条数据时不会自动加载一对多关联的数据<br>但是当我指定 relations 时，它会去查询关联的数据，只有你加上了 eager为 true 的时候会自动查询 </p>
+</blockquote>
+<p>例如查询用户关联的图片</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> userRepository.<span class="hljs-title function_">findOne</span>(&#123;<br>  <span class="hljs-attr">where</span>: &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125;,<br>  <span class="hljs-attr">relations</span>: [<span class="hljs-string">&#x27;photos&#x27;</span>],<br>&#125;);<br><br><span class="hljs-comment">// 查询结果是这样的</span><br>&#123;<br>  <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-string">&quot;photos&quot;</span>: [<br>    &#123; <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;xxx&quot;</span> &#125;,<br>    &#123; <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">11</span>, <span class="hljs-string">&quot;url&quot;</span>: <span class="hljs-string">&quot;yyy&quot;</span> &#125;<br>  ]<br>&#125;<br><br><span class="hljs-comment">// 如果不带 relations 的时候，查询结果是这样的</span><br>&#123;<br>  <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span><br>  <span class="hljs-comment">// 没有 photos</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>TypeORM还有一种方式可以支持你查询关联数据</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Entity</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>  <span class="hljs-meta">@PrimaryGeneratedColumn</span>()<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br><br>  <span class="hljs-meta">@OneToMany</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Photo</span>, <span class="hljs-function"><span class="hljs-params">photo</span> =&gt;</span> photo.<span class="hljs-property">user</span>)<br>  <span class="hljs-attr">photos</span>: <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">Photo</span>[]&gt;; <span class="hljs-comment">// 注意这里是 Promise</span><br>&#125;<br><br><span class="hljs-comment">// 当我把 photos 设置成了 Promse 然后发起查询</span><br><br><span class="hljs-keyword">const</span> user = <span class="hljs-keyword">await</span> userRepository.<span class="hljs-title function_">findOne</span>(&#123; <span class="hljs-attr">where</span>: &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125; &#125;);<br><br><span class="hljs-comment">// 此时 user 里并没有真的装载 photos</span><br><span class="hljs-comment">// 但是当你写了以下代码的时候，它会执行以下sql查询语句</span><br><br><span class="hljs-keyword">const</span> photos = <span class="hljs-keyword">await</span> user.<span class="hljs-property">photos</span>;<br><br><span class="hljs-comment">// SELECT * FROM photo WHERE userId = 1;</span><br></code></pre></td></tr></table></figure>
+
+<p>但是 <strong>lazy loading</strong> 有一个缺点，就是它是单个查询，如果我需要查询一批用户，然后再用循环语句去获取每个用户 <strong>photos</strong> 的时候，你的查询会变成 <strong>N+1</strong> 查询。也就是一次用户数据查询加上n次的用户photos查询，此用法会造成性能问题并且SQL很难优化。</p>
+<p>所以，我还是更加推荐显示写 <strong>relations</strong> ，这样 SQL 才会可控。</p>
+<h3 id="多个数据库如何连接"><a href="#多个数据库如何连接" class="headerlink" title="多个数据库如何连接"></a>多个数据库如何连接</h3><p>通常我们的项目中可能会连接多个数据库，我们可以通过以下方式来创建多个连接</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      ...defaultOptions,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;default&#x27;</span>,<br>      <span class="hljs-attr">host</span>: <span class="hljs-string">&#x27;user_db_host&#x27;</span>,<br>      <span class="hljs-attr">entities</span>: [<span class="hljs-title class_">User</span>],<br>    &#125;),<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      ...defaultOptions,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;albumsConnection&#x27;</span>,<br>      <span class="hljs-attr">host</span>: <span class="hljs-string">&#x27;album_db_host&#x27;</span>,<br>      <span class="hljs-attr">entities</span>: [<span class="hljs-title class_">Album</span>],<br>    &#125;),<br>  ],<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>我们发现配置中多了name属性，这是因为如果只有一个连接，你可以不写name，默认就是 <code>default</code>，但是如果有多个连接，我们应该区分名称，这样连接不会被覆盖</p>
+<p>然后我们在使用表的时候，需要告诉 <code>TypeOrmModule.forFeature()</code> 方法和 <code>@InjectRepository()</code> 装饰器应该使用哪个数据源，如果不写，默认是 <code>default</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forFeature</span>([<span class="hljs-title class_">User</span>]), <span class="hljs-comment">// default名称的连接库中找 users 表</span><br>    <span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forFeature</span>([<span class="hljs-title class_">Album</span>], <span class="hljs-string">&#x27;albumsConnection&#x27;</span>), <span class="hljs-comment">// albumsConnection名称的连接库中找 albums 表</span><br>  ],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="如何使用TypeORM来编写业务代码"><a href="#如何使用TypeORM来编写业务代码" class="headerlink" title="如何使用TypeORM来编写业务代码"></a>如何使用TypeORM来编写业务代码</h3><p>在处理完连接后，我们应该这样使用</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Module</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">TypeOrmModule</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/typeorm&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">UsersService</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./users.service&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">UsersController</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./users.controller&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">User</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.entity&#x27;</span>;<br><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-comment">// 这里引入 users 表</span><br>  <span class="hljs-attr">imports</span>: [<span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forFeature</span>([<span class="hljs-title class_">User</span>])],<br>  <span class="hljs-attr">providers</span>: [<span class="hljs-title class_">UsersService</span>],<br>  <span class="hljs-attr">controllers</span>: [<span class="hljs-title class_">UsersController</span>],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UsersModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后在userService 中我们可以直接使用表</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Injectable</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">InjectRepository</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/typeorm&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Repository</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;typeorm&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">User</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.entity&#x27;</span>;<br><br><span class="hljs-meta">@Injectable</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UsersService</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span><br><span class="hljs-params">    <span class="hljs-comment">// 注入 users 表</span></span><br><span class="hljs-params">    <span class="hljs-meta">@InjectRepository</span>(User)</span><br><span class="hljs-params">    <span class="hljs-keyword">private</span> usersRepository: Repository&lt;User&gt;,</span><br><span class="hljs-params">  </span>) &#123;&#125;<br><br>  <span class="hljs-title function_">findAll</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>[]&gt; &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">usersRepository</span>.<span class="hljs-title function_">find</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">findOne</span>(<span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span> | <span class="hljs-literal">null</span>&gt; &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">usersRepository</span>.<span class="hljs-title function_">findOneBy</span>(&#123; id &#125;);<br>  &#125;<br><br>  <span class="hljs-keyword">async</span> <span class="hljs-title function_">remove</span>(<span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; &#123;<br>    <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">usersRepository</span>.<span class="hljs-title function_">delete</span>(id);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="其他功能"><a href="#其他功能" class="headerlink" title="其他功能"></a>其他功能</h3><p>当然我们后面还有transaction，异步配置等等，等需要的时候可以阅读文档进行使用或接入</p>
+<h2 id="nestjs接入验证"><a href="#nestjs接入验证" class="headerlink" title="nestjs接入验证"></a>nestjs接入验证</h2><h3 id="validation的集成"><a href="#validation的集成" class="headerlink" title="validation的集成"></a>validation的集成</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm i --save class-validator class-transformer<br></code></pre></td></tr></table></figure>
+
+<p>一般参数的验证都是可以放到全局的，有两种方式可以全局应用</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 方式一：在根模块的providers中注册</span><br>&#123;<br>  <span class="hljs-attr">provide</span>: <span class="hljs-variable constant_">APP_PIPE</span>,<br>  <span class="hljs-attr">useFactory</span>: <span class="hljs-function">() =&gt;</span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValidationPipe</span>(&#123;<br>	  <span class="hljs-attr">transform</span>: <span class="hljs-literal">true</span>,<br>	  <span class="hljs-attr">whitelist</span>: <span class="hljs-literal">true</span>,<br>	  <span class="hljs-attr">forbidNonWhitelisted</span>: <span class="hljs-literal">true</span>,<br>	  <span class="hljs-attr">disableErrorMessages</span>: <span class="hljs-literal">false</span>,<br>	&#125;);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 方式二：在 main.ts 主文件中注册</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">bootstrap</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> app = <span class="hljs-keyword">await</span> <span class="hljs-title class_">NestFactory</span>.<span class="hljs-title function_">create</span>(<span class="hljs-title class_">AppModule</span>);<br>  app.<span class="hljs-title function_">useGlobalPipes</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ValidationPipe</span>(&#123; <span class="hljs-attr">transform</span>: <span class="hljs-literal">true</span> &#125;));<br>  <span class="hljs-keyword">await</span> app.<span class="hljs-title function_">listen</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">PORT</span> ?? <span class="hljs-number">3000</span>);<br>&#125;<br><span class="hljs-title function_">bootstrap</span>();<br></code></pre></td></tr></table></figure>
+
+<p>我们发现 <code>ValidationPipe</code> 允许我们传递一些参数</p>
+<ul>
+<li>enableDebugMessages（boolean）：在出现问题时向控制台打印额外的警告信息</li>
+<li>skipUndefinedProperties（boolean）：跳过验证对象中所有未定义属性的验证</li>
+<li>whitelist（boolean）：删除非白名单属性</li>
+<li>disableErrorMessages（boolean）：不返回错误信息给客户端</li>
+<li>还有其他的属性可以控制验证的行为</li>
+</ul>
+<h3 id="validation的使用"><a href="#validation的使用" class="headerlink" title="validation的使用"></a>validation的使用</h3><p>一般验证都是 <code>dto</code> 文件</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Post</span>()<br><span class="hljs-title function_">create</span>(<span class="hljs-params"><span class="hljs-meta">@Body</span>() createUserDto: CreateUserDto</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;This action adds a new user&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>dto</code> 文件应该是这样的</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123;<br>  <span class="hljs-title class_">IsEnum</span>, <span class="hljs-comment">// 枚举</span><br>  <span class="hljs-title class_">IsNotEmpty</span>, <span class="hljs-comment">// 不为空</span><br>  <span class="hljs-title class_">IsNumber</span>, <span class="hljs-comment">// 数值</span><br>  <span class="hljs-title class_">IsOptional</span>, <span class="hljs-comment">// 可选</span><br>  <span class="hljs-title class_">IsString</span>, <span class="hljs-comment">// 字符串</span><br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;class-validator&#x27;</span>;<br><br><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Status</span> &#123;<br>  <span class="hljs-variable constant_">OK</span> = <span class="hljs-number">1</span>,<br>  <span class="hljs-variable constant_">NOTOK</span> = <span class="hljs-number">2</span>,<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CreateUserDto</span> &#123;<br>  <span class="hljs-meta">@IsString</span>()<br>  <span class="hljs-meta">@IsNotEmpty</span>()<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br> <br>  <span class="hljs-meta">@IsOptional</span>()<br>  <span class="hljs-meta">@IsNumber</span>()<br>  <span class="hljs-meta">@IsEnum</span>(<span class="hljs-title class_">Status</span>) <span class="hljs-comment">// 这个告诉用户status是可选的，如果传了，必须是1或2</span><br>  status?: <span class="hljs-title class_">Status</span>; <span class="hljs-comment">// 1=ok, 2=not ok</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后我们在请求创建新用户的时候，就会走 <code>dto</code> 的验证</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 传递参数如下</span><br>&#123;<br>	<span class="hljs-attr">status</span>: <span class="hljs-number">1</span><br>&#125;<br><br><span class="hljs-comment">// 提示 name 必传</span><br><br>&#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Justin&quot;</span>,<br>  <span class="hljs-attr">status</span>: <span class="hljs-number">3</span><br>&#125;<br><br><span class="hljs-comment">// 提示 status 必须是 1 或 2</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="其他用法"><a href="#其他用法" class="headerlink" title="其他用法"></a>其他用法</h3><p>当然你还可以针对 <code>CreateUserDto</code> 进行显示的转换，例如比如你还有一个字符串的数值，就可以在service中这么写来进行转换</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Get</span>(<span class="hljs-string">&#x27;:id&#x27;</span>)<br><span class="hljs-title function_">findOne</span>(<span class="hljs-params"></span><br><span class="hljs-params">  <span class="hljs-meta">@Param</span>(<span class="hljs-string">&#x27;id&#x27;</span>, ParseIntPipe) id: <span class="hljs-built_in">number</span>,</span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-keyword">typeof</span> id === <span class="hljs-string">&#x27;number&#x27;</span>); <span class="hljs-comment">// true</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;This action returns a user&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当然你可以创建一个新的用户，用的是 <code>CreateUserDto</code>，那么你也可以更新用户信息，用的就是 <code>UpdateUserDto</code>，我们发现，更新和创建的区别就是是否需要传递主键，并且更新的话，每个字段其实都是可选的，按照restful的风格，应该是传递两个参数，第一个是需要更新的数据的主键id，然后就是需要更新的数据</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UpdateUserDto</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">PartialType</span>(<span class="hljs-title class_">CreateUserDto</span>) &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样我们相当于直接复用了 <code>CreateUserDto</code> 的字段，并将每个字段变成可选类型</p>
+<h2 id="nestjs接入MONGO"><a href="#nestjs接入MONGO" class="headerlink" title="nestjs接入MONGO"></a>nestjs接入MONGO</h2><h3 id="mongoose-集成"><a href="#mongoose-集成" class="headerlink" title="mongoose 集成"></a>mongoose 集成</h3><p>安装所需的依赖项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm i @nestjs/mongoose mongoose<br></code></pre></td></tr></table></figure>
+
+<p>然后在根模块导入进行 <code>mongoose</code> 的使用</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Module</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">MongooseModule</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/mongoose&#x27;</span>;<br><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<span class="hljs-title class_">MongooseModule</span>.<span class="hljs-title function_">forRoot</span>(<span class="hljs-string">&#x27;mongodb://localhost/nest&#x27;</span>)],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="如何定义mongo-collection"><a href="#如何定义mongo-collection" class="headerlink" title="如何定义mongo collection"></a>如何定义mongo collection</h3><p>使用 Mongoose，一切都是 Schema，每个 Schema 都映射到一个 MongoDB Collection</p>
+<p>例如我们的用户表，其实可以放到 <code>mongo</code> 中</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Prop</span>, <span class="hljs-title class_">Schema</span>, <span class="hljs-title class_">SchemaFactory</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/mongoose&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">HydratedDocument</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mongoose&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">UserDocument</span> = <span class="hljs-title class_">HydratedDocument</span>&lt;<span class="hljs-title class_">User</span>&gt;;<br><br><span class="hljs-meta">@Schema</span>(&#123;<br>  <span class="hljs-attr">timestamps</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// 默认添加返回创建时间和更新时间</span><br>  <span class="hljs-attr">collection</span>: <span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-comment">// collection 名称，如果不主动设置，那么就跟mysql entity一样，就是对应的 users collection</span><br>  <span class="hljs-attr">toJSON</span>: &#123; <span class="hljs-comment">// 设置之后，exec查询结果后，可以通过调用 toJSON 方法进行转换调用</span><br>    <span class="hljs-attr">virtuals</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">versionKey</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">transform</span>: <span class="hljs-function">(<span class="hljs-params">_, ret: <span class="hljs-built_in">any</span></span>) =&gt;</span> &#123;<br>      ret.<span class="hljs-property">id</span> = ret.<span class="hljs-property">_id</span>.<span class="hljs-title function_">toString</span>();<br>      <span class="hljs-keyword">delete</span> ret.<span class="hljs-property">_id</span>;<br>      <span class="hljs-keyword">return</span> ret;<br>    &#125;,<br>  &#125;,<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>  <span class="hljs-meta">@Prop</span>()<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-meta">@Prop</span>()<br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span>;<br><br>  <span class="hljs-meta">@Prop</span>()<br>  <span class="hljs-attr">hobby</span>: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">UserSchema</span> = <span class="hljs-title class_">SchemaFactory</span>.<span class="hljs-title function_">createForClass</span>(<span class="hljs-title class_">User</span>);<br></code></pre></td></tr></table></figure>
+
+<p><code>@Prop</code> 装饰器是用来定义文档中的属性的，一些简单的字段类型它可以自动推断，但是一些复杂的需要我们去主动申明</p>
+<p>例如一个数组字符串</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Prop</span>([<span class="hljs-title class_">String</span>])<br><span class="hljs-attr">tags</span>: <span class="hljs-built_in">string</span>[];<br></code></pre></td></tr></table></figure>
+
+<p><strong>Props</strong> 中还允许你传递一系列的 options 参数</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Prop</span>(&#123; <span class="hljs-attr">type</span>: <span class="hljs-title class_">String</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> &#125;)<br><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="如何注册mongoose-collection"><a href="#如何注册mongoose-collection" class="headerlink" title="如何注册mongoose collection"></a>如何注册mongoose collection</h3><p>上面我们定义了一个user collection，那么我们应该怎么将它注册进去呢？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Module</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">MongooseModule</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/mongoose&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">UserController</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.controller&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">UserService</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.service&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">User</span>, <span class="hljs-title class_">UserSchema</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./schemas/user.schema&#x27;</span>;<br><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<span class="hljs-title class_">MongooseModule</span>.<span class="hljs-title function_">forFeature</span>([&#123; <span class="hljs-attr">name</span>: <span class="hljs-title class_">User</span>.<span class="hljs-property">name</span>, <span class="hljs-attr">schema</span>: <span class="hljs-title class_">UserSchema</span> &#125;])],<br>  <span class="hljs-attr">controllers</span>: [<span class="hljs-title class_">UserController</span>],<br>  <span class="hljs-attr">providers</span>: [<span class="hljs-title class_">UserService</span>],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="如何使用mongoose来编写业务代码"><a href="#如何使用mongoose来编写业务代码" class="headerlink" title="如何使用mongoose来编写业务代码"></a>如何使用mongoose来编写业务代码</h3><p>在上面注册了 User Collection 之后，我们可以在service层编写相关的业务代码</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Model</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mongoose&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Injectable</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">InjectModel</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/mongoose&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">User</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./schemas/user.schema&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">CreateUserDto</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./dto/create-user.dto&#x27;</span>;<br><br><span class="hljs-meta">@Injectable</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-meta">@InjectModel</span>(User.name) <span class="hljs-keyword">private</span> userModel: Model&lt;User&gt;</span>) &#123;&#125;<br><br>  <span class="hljs-keyword">async</span> <span class="hljs-title function_">create</span>(<span class="hljs-attr">createUserDto</span>: <span class="hljs-title class_">CreateUserDto</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>&gt; &#123;<br>    <span class="hljs-keyword">const</span> cteatedUser = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">userModel</span>.<span class="hljs-title function_">create</span>(createUserDto);<br>    <span class="hljs-keyword">return</span> cteatedUser.<span class="hljs-title function_">toJSON</span>();<br>  &#125;<br><br>  <span class="hljs-keyword">async</span> <span class="hljs-title function_">findAll</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>[]&gt; &#123;<br>    <span class="hljs-keyword">const</span> docs = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">userModel</span>.<span class="hljs-title function_">find</span>().<span class="hljs-title function_">exec</span>();<br>    <span class="hljs-keyword">return</span> docs.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">d</span>) =&gt;</span> d.<span class="hljs-title function_">toJSON</span>());<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>[!warning] 注意<br>我们通过 Model 查询返回的其实是 mongoose 的 document<br>所以我们最好是通过 toJSON 对 document 数据进行一个处理返回</p>
+</blockquote>
+<h3 id="如何连接多个数据库"><a href="#如何连接多个数据库" class="headerlink" title="如何连接多个数据库"></a>如何连接多个数据库</h3><p>我们通常会连接多个mongoose库</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Module</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/common&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">MongooseModule</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/mongoose&#x27;</span>;<br><br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">MongooseModule</span>.<span class="hljs-title function_">forRoot</span>(<span class="hljs-string">&#x27;mongodb://localhost/test&#x27;</span>, &#123;<br>      <span class="hljs-attr">connectionName</span>: <span class="hljs-string">&#x27;test&#x27;</span>, <span class="hljs-comment">// 通过 connectionName 来区分，否则会覆盖</span><br>    &#125;),<br>    <span class="hljs-title class_">MongooseModule</span>.<span class="hljs-title function_">forRoot</span>(<span class="hljs-string">&#x27;mongodb://localhost/users&#x27;</span>, &#123;<br>      <span class="hljs-attr">connectionName</span>: <span class="hljs-string">&#x27;users&#x27;</span>,<br>    &#125;),<br>  ],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后当我们主动设置了 <code>connectionName</code> 后，我们在注册的时候，应该带上 <code>connectionName</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">MongooseModule</span>.<span class="hljs-title function_">forFeature</span>([&#123; <span class="hljs-attr">name</span>: <span class="hljs-title class_">User</span>.<span class="hljs-property">name</span>, <span class="hljs-attr">schema</span>: <span class="hljs-title class_">UserSchema</span> &#125;], <span class="hljs-string">&#x27;users&#x27;</span>),<br>  ],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后在service中这样使用</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@Injectable</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-meta">@InjectModel</span>(User.name, <span class="hljs-string">&#x27;users&#x27;</span>) <span class="hljs-keyword">private</span> userModel: Model&lt;User&gt;</span>) &#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="其他用法-1"><a href="#其他用法-1" class="headerlink" title="其他用法"></a>其他用法</h3><p>当然在mongoose中还有事务，插件，子文档等功能，等实际用到了可以查看文档进行补充学习</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/nestjs/" class="print-no-link">#nestjs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>nestjs接入配置、数据库和验证</div>
+      <div>https://shiyuq.github.io/2025/09/15/nestjs接入数据库、MONGO和验证/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>shiyuq</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/12/%E4%B8%8A%E6%89%8Bnestjs/" title="上手nestjs">
+                        <span class="hidden-mobile">上手nestjs</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
