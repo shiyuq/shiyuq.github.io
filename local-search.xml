@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>nestjs接入动态配置</title>
+    <link href="/2025/09/17/nestjs%E6%8E%A5%E5%85%A5%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/"/>
+    <url>/2025/09/17/nestjs%E6%8E%A5%E5%85%A5%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<p>动态配置</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>nestjs</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>nestjs接入配置、数据库和验证</title>
     <link href="/2025/09/15/nestjs%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81MONGO%E5%92%8C%E9%AA%8C%E8%AF%81/"/>
     <url>/2025/09/15/nestjs%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81MONGO%E5%92%8C%E9%AA%8C%E8%AF%81/</url>
