@@ -16,15 +16,15 @@
   <meta name="author" content="shiyuq">
   <meta name="keywords" content="">
   
-    <meta name="description" content="动态配置">
+    <meta name="description" content="nestjs动态配置接入的原因应用程序通常在不同的环境中运行。根据环境的不同，应使用不同的配置设置。例如，通常本地环境依赖于本机的数据库凭证，仅对本地数据库实例有效。生产环境将使用一组单独的数据库凭据。由于配置变量会发生变化，因此最佳实践是在环境中存储配置变量。 如何安装配置1$ npm i --save @nestjs&#x2F;config  @nestjs&#x2F;config 的内部其实使用的是 doten">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nestjs接入动态配置">
 <meta property="og:url" content="https://shiyuq.github.io/2025/09/17/nestjs%E6%8E%A5%E5%85%A5%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="shiyuq">
-<meta property="og:description" content="动态配置">
+<meta property="og:description" content="nestjs动态配置接入的原因应用程序通常在不同的环境中运行。根据环境的不同，应使用不同的配置设置。例如，通常本地环境依赖于本机的数据库凭证，仅对本地数据库实例有效。生产环境将使用一组单独的数据库凭据。由于配置变量会发生变化，因此最佳实践是在环境中存储配置变量。 如何安装配置1$ npm i --save @nestjs&#x2F;config  @nestjs&#x2F;config 的内部其实使用的是 doten">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-17T08:55:25.000Z">
-<meta property="article:modified_time" content="2025-09-17T08:55:44.882Z">
+<meta property="article:modified_time" content="2025-09-25T09:04:23.402Z">
 <meta property="article:author" content="shiyuq">
 <meta property="article:tag" content="nestjs">
 <meta name="twitter:card" content="summary_large_image">
@@ -196,7 +196,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4 字
+          4.6k 字
         
       </span>
     
@@ -207,7 +207,7 @@
         
         
         
-          1 分钟
+          38 分钟
         
       </span>
     
@@ -249,7 +249,67 @@
             
               <div class="markdown-body">
                 
-                <p>动态配置</p>
+                <h2 id="nestjs动态配置接入的原因"><a href="#nestjs动态配置接入的原因" class="headerlink" title="nestjs动态配置接入的原因"></a>nestjs动态配置接入的原因</h2><p>应用程序通常在不同的环境中运行。根据环境的不同，应使用不同的配置设置。例如，通常本地环境依赖于本机的数据库凭证，仅对本地数据库实例有效。生产环境将使用一组单独的数据库凭据。由于配置变量会发生变化，因此最佳实践是在环境中存储配置变量。</p>
+<h2 id="如何安装配置"><a href="#如何安装配置" class="headerlink" title="如何安装配置"></a>如何安装配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ npm i --save @nestjs/config<br></code></pre></td></tr></table></figure>
+
+<p><code>@nestjs/config</code> 的内部其实使用的是 <code>dotenv</code></p>
+<h2 id="如何使用配置"><a href="#如何使用配置" class="headerlink" title="如何使用配置"></a>如何使用配置</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 从app module中引入</span><br><span class="hljs-title class_">ConfigModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>  <span class="hljs-attr">isGlobal</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">envFilePath</span>:<br>	process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&#x27;production&#x27;</span><br>	  ? []<br>	  : [<span class="hljs-string">`.env.<span class="hljs-subst">$&#123;process.env.NODE_ENV || <span class="hljs-string">&#x27;development&#x27;</span>&#125;</span>`</span>],<br>  <span class="hljs-attr">load</span>: [configFile],<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>默认代码是从项目的根目录加载 .<code>env</code> 文件，合并 <code>env</code> 文件中的键值对，并分配给 <code>process.env</code> 环境变量，并且可以通过 <code>configService</code> 来读取环境变量</p>
+<p>环境变量文件应该是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs env">DATABASE_USER=test<br>DATABASE_PASSWORD=test<br></code></pre></td></tr></table></figure>
+
+<p>我们优先是将所有的配置文件放在根目录，并用不同的环境来区分</p>
+<p>例如 <code>.env.development</code> 、 <code>.env.test</code> 、 <code>.env.production</code> 分别代表本地、测试和线上环境</p>
+<p>当然我们也可以有一些无关紧要的通用配置，比如 <code>.env.local</code> </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-title class_">ConfigModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>  <span class="hljs-attr">envFilePath</span>: <span class="hljs-string">&#x27;.env.development&#x27;</span>, <span class="hljs-comment">// 指定单个文件路径</span><br>&#125;);<br><br><span class="hljs-comment">// 指定多个文件路径</span><br><span class="hljs-title class_">ConfigModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>  <span class="hljs-attr">envFilePath</span>: [<span class="hljs-string">&#x27;.env.local&#x27;</span>, <span class="hljs-string">&#x27;.env.development&#x27;</span>],<br>&#125;);<br><br><span class="hljs-comment">// 如果有多个配置文件，那么会优先选用第一个文件中的变量，如果第一个文件中没有此变量，会去第二个文件中寻找变量，以此类推</span><br></code></pre></td></tr></table></figure>
+
+<p>通常我们是全局使用配置，所以可以加入 <code>isGlobal</code> 用来标记全局使用</p>
+<h2 id="如何加载配置项"><a href="#如何加载配置项" class="headerlink" title="如何加载配置项"></a>如何加载配置项</h2><p>一般我们的项目会涉及到多个不同类型的配置，比如 <code>redis</code>，<code>mongo</code>，<code>mysql</code>，<code>es</code>等等</p>
+<p>所以我们的最佳实践应该是将不同类型的配置文件分开存放</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs txt">config<br>  |<br>  ——————mongo<br>  |<br>  ——————mysql<br>  |<br>  ——————es<br>  |<br>  ——————redis<br></code></pre></td></tr></table></figure>
+
+<p>这样我们可以快速的查看配置项</p>
+<p>例如下面的例子</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">//config/configuration.ts  基础配置项</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> () =&gt; (&#123;<br>  <span class="hljs-attr">port</span>: <span class="hljs-built_in">parseInt</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">PORT</span>, <span class="hljs-number">10</span>) || <span class="hljs-number">3000</span>,<br>  <span class="hljs-attr">database</span>: &#123;<br>    <span class="hljs-attr">host</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DATABASE_HOST</span>,<br>    <span class="hljs-attr">port</span>: <span class="hljs-built_in">parseInt</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">DATABASE_PORT</span>, <span class="hljs-number">10</span>) || <span class="hljs-number">5432</span><br>  &#125;<br>&#125;);<br><br><span class="hljs-comment">// 然后在入口app module中这样引入</span><br><span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./config/configuration&#x27;</span>;<br><span class="hljs-meta">@Module</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<br>    <span class="hljs-title class_">ConfigModule</span>.<span class="hljs-title function_">forRoot</span>(&#123;<br>      <span class="hljs-attr">load</span>: [configuration],<br>    &#125;),<br>  ],<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppModule</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们注意到 <code>load</code> 方法是一个数组，这也就意味着我们可以引入多个配置文件</p>
+<p>在nestjs接入数据库、mongo一章我们讲到了如何在nestjs中加载mysql配置，但是我们是直接在代码中写死的，现在我们来改写一下，通过加载本地的 <code>.env.development</code> 文件配置。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ConfigModule</span>, <span class="hljs-title class_">ConfigService</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/config&#x27;</span>;<br><span class="hljs-comment">// 首先是app module中的配置</span><br><span class="hljs-title class_">TypeOrmModule</span>.<span class="hljs-title function_">forRootAsync</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<span class="hljs-title class_">ConfigModule</span>],<br>  <span class="hljs-attr">inject</span>: [<span class="hljs-title class_">ConfigService</span>],<br>  <span class="hljs-attr">useFactory</span>: <span class="hljs-function">(<span class="hljs-params">configService: ConfigService</span>) =&gt;</span> &#123;<br>	<span class="hljs-keyword">const</span> mysql = configService.<span class="hljs-title function_">getOrThrow</span>(<span class="hljs-string">&#x27;mysql&#x27;</span>, &#123; <span class="hljs-attr">infer</span>: <span class="hljs-literal">true</span> &#125;);<br>	<span class="hljs-keyword">return</span> &#123;<br>	  ...mysql,<br>	  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;mysql&#x27;</span>,<br>	  <span class="hljs-attr">autoLoadEntities</span>: <span class="hljs-literal">true</span>,<br>	  <span class="hljs-attr">synchronize</span>: <span class="hljs-literal">false</span>,<br>	&#125;;<br>  &#125;,<br>&#125;)<br><br><span class="hljs-comment">// 我们通过注入configservice，然后通过configService.getOrThrow来获取mysql的配置</span><br></code></pre></td></tr></table></figure>
+
+<p>其次我们需要知道mysql的配置从哪里来</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs txt">config<br>  |<br>  ——————mongo<br>  |<br>  ——————mysql  (index.ts)<br>  |<br>  ——————es<br>  |<br>  ——————redis<br></code></pre></td></tr></table></figure>
+
+<p>我们现在来编写mysql下的 <code>index.ts</code> 文件</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; registerAs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/config&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">MysqlConfig</span> = &#123;<br>  host?: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">port</span>: <span class="hljs-built_in">number</span>;<br>  username?: <span class="hljs-built_in">string</span>;<br>  password?: <span class="hljs-built_in">string</span>;<br>  database?: <span class="hljs-built_in">string</span>;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> registerAs&lt;<span class="hljs-title class_">MysqlConfig</span>&gt;(<span class="hljs-string">&#x27;mysql&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">host</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">MYSQL_HOST</span>,<br>    <span class="hljs-attr">port</span>: <span class="hljs-title class_">Number</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">MYSQL_PORT</span> || <span class="hljs-number">3306</span>),<br>    <span class="hljs-attr">username</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">MYSQL_USER</span>,<br>    <span class="hljs-attr">password</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">MYSQL_PASSWORD</span>,<br>    <span class="hljs-attr">database</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">MYSQL_DB</span>,<br>  &#125;;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>那 <code>process.env</code> 下面的变量在哪里定义呢？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">// .env.development<br><br><span class="hljs-comment"># 基础配置</span><br>NODE_ENV=development<br>APP_PORT=3000<br><br><span class="hljs-comment"># MySQL</span><br>MYSQL_HOST=localhost<br>MYSQL_PORT=3306<br>MYSQL_USER=root<br>MYSQL_PASSWORD=root<br>MYSQL_DB=db_nest<br><span class="hljs-comment"># MONGO</span><br><br>MONGO_URI=mongodb://root:root@localhost:27017/db_nest<br></code></pre></td></tr></table></figure>
+
+<p>现在我们把所有配置都已经准备齐全了，那我们通过 <code>configService.getOrThrow(&#39;mysql&#39;, &#123; infer: true &#125;);</code> 拿到的 <code>mysql</code> 就是 <code>MysqlConfig</code> 命名空间下的导出的所有配置字段</p>
+<p>同理，我们还会接入 <code>mongoose</code> 配置</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// app module</span><br><span class="hljs-title class_">MongooseModule</span>.<span class="hljs-title function_">forRootAsync</span>(&#123;<br>  <span class="hljs-attr">imports</span>: [<span class="hljs-title class_">ConfigModule</span>],<br>  <span class="hljs-attr">inject</span>: [<span class="hljs-title class_">ConfigService</span>],<br>  <span class="hljs-attr">useFactory</span>: <span class="hljs-function">(<span class="hljs-params">configService: ConfigService</span>) =&gt;</span> &#123;<br>	<span class="hljs-keyword">const</span> mongo = configService.<span class="hljs-title function_">getOrThrow</span>(<span class="hljs-string">&#x27;mongo&#x27;</span>, &#123; <span class="hljs-attr">infer</span>: <span class="hljs-literal">true</span> &#125;);<br>	<span class="hljs-keyword">return</span> &#123;<br>	  <span class="hljs-attr">uri</span>: mongo.<span class="hljs-property">uri</span>,<br>	&#125;;<br>  &#125;,<br>&#125;),<br><br><span class="hljs-comment">// mongo index.ts</span><br><span class="hljs-keyword">import</span> &#123; registerAs &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@nestjs/config&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">MongoConfig</span> = &#123;<br>  uri?: <span class="hljs-built_in">string</span>;<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> registerAs&lt;<span class="hljs-title class_">MongoConfig</span>&gt;(<span class="hljs-string">&#x27;mongo&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">uri</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">MONGO_URI</span>,<br>  &#125;;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>这基本上可以满足我们的配置化需求，但是我们通常还会面临一个问题，我们的本地开发是可以把密码什么的告诉开发者，那如果是线上怎么办呢？我们是不是应该把这些密码等一些关键的信息通过其他的方式打进去呢？</p>
+<p>我们可以通过 <code>ci/cd</code> 的方式注入</p>
+<ul>
+<li>github actions -&gt; Repository Settings-&gt; Secrets and variables -&gt; Actions</li>
+<li>gitlab -&gt; Settings -&gt; CI&#x2F;CD -&gt; Variables</li>
+</ul>
+<p>构建docker镜像</p>
+<ul>
+<li>我们在CI&#x2F;CD中只打包代码，不打包配置</li>
+<li>线上部署时，<strong>配置交给 K8s</strong>，通过 ConfigMap + Secret 管理</li>
+<li>Deployment 里注入环境变量CI&#x2F;CD（GitHub Actions &#x2F; GitLab CI &#x2F; Jenkins）在执行到 <strong>部署阶段</strong>时，把配置注入到 K8s</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">to</span> <span class="hljs-string">K8s</span><br>  <span class="hljs-attr">run:</span> <span class="hljs-string">|</span><br><span class="hljs-string">    kubectl create secret generic app-secrets \</span><br><span class="hljs-string">      --from-literal=DB_HOST=$&#123;&#123; secrets.DB_HOST &#125;&#125; \</span><br><span class="hljs-string">      --from-literal=DB_USER=$&#123;&#123; secrets.DB_USER &#125;&#125; \</span><br><span class="hljs-string">      --from-literal=DB_PASS=$&#123;&#123; secrets.DB_PASS &#125;&#125; \</span><br><span class="hljs-string">      --dry-run=client -o yaml | kubectl apply -f -</span><br><span class="hljs-string">    kubectl apply -f k8s/deployment.yaml</span><br></code></pre></td></tr></table></figure>
+
+<p>通过consul等类配置中心注入</p>
+<ul>
+<li>在 NestJS 启动时，通过 Consul HTTP API 拉取配置</li>
+<li>在 CI&#x2F;CD 流水线里，把敏感配置写入 Consul</li>
+<li>部署时应用直接去 Consul 取，不需要 CI&#x2F;CD 再往 Pod 里打环境变量</li>
+</ul>
 
                 
               </div>
@@ -323,8 +383,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/09/15/nestjs%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81MONGO%E5%92%8C%E9%AA%8C%E8%AF%81/" title="nestjs接入配置、数据库和验证">
-                        <span class="hidden-mobile">nestjs接入配置、数据库和验证</span>
+                      <a href="/2025/09/15/nestjs%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81MONGO%E5%92%8C%E9%AA%8C%E8%AF%81/" title="nestjs接入数据库、MONGO和验证">
+                        <span class="hidden-mobile">nestjs接入数据库、MONGO和验证</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
