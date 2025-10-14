@@ -24,7 +24,7 @@
 <meta property="og:description" content="准备工作 安装docker desktop 通过docker desktop安装k8s集群 一个基础的nest项目  docker上手容器常用命令1234567891011121314151617181920212223242526272829303132333435# 查看运行的容器docker ps# 查看所有容器docker ps -a# 停止容器docker stop &lt;contai">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-14T03:13:59.000Z">
-<meta property="article:modified_time" content="2025-10-14T09:50:59.518Z">
+<meta property="article:modified_time" content="2025-10-14T09:57:46.960Z">
 <meta property="article:author" content="shiyuq">
 <meta property="article:tag" content="运维部署">
 <meta name="twitter:card" content="summary_large_image">
@@ -449,12 +449,12 @@
 <li>Deploy 阶段，Kubernetes 根据 YAML 文件（Deployment &#x2F; Service &#x2F; ConfigMap 等）创建或更新资源</li>
 </ul>
 <pre><code class=" mermaid">flowchart LR
-    A[💻 开发提交代码&lt;br /&gt;push to Git repo] --&gt; B[⚙️ CI 构建&lt;br /&gt;npm ci + npm run build]
-    B --&gt; C[🐳 构建 Docker 镜像&lt;br /&gt;docker build]
-    C --&gt; D[📤 推送镜像仓库&lt;br /&gt;docker push]
-    D --&gt; E[☸️ 部署阶段&lt;br /&gt;kubectl apply 或&lt;br /&gt;kubectl set image]
-    E --&gt; F[🧩 Kubernetes Deployment&lt;br /&gt;滚动更新 Pods]
-    F --&gt; G[🌐 Service&lt;br /&gt;统一访问入口]
+    A[💻 开发提交代码&lt;br&gt;push to Git repo] --&gt; B[⚙️ CI 构建&lt;br&gt;npm ci + npm run build]
+    B --&gt; C[🐳 构建 Docker 镜像&lt;br&gt;docker build]
+    C --&gt; D[📤 推送镜像仓库&lt;br&gt;docker push]
+    D --&gt; E[☸️ 部署阶段&lt;br&gt;kubectl apply 或&lt;br&gt;kubectl set image]
+    E --&gt; F[🧩 Kubernetes Deployment&lt;br&gt;滚动更新 Pods]
+    F --&gt; G[🌐 Service&lt;br&gt;统一访问入口]
     G --&gt; H[🧑‍💻 用户访问]
 
     style B fill:#f9d29d,stroke:#b58900,color:#000
@@ -463,7 +463,6 @@
     style E fill:#bde0fe,stroke:#0077b6,color:#000
     style F fill:#bde0fe,stroke:#0077b6,color:#000
     style G fill:#caffbf,stroke:#588157,color:#000
-
 </code></pre>
 
 <p>由于我们的nest应用会不断更新迭代，所以我们遇到了一个问题，当我重复打镜像的时候，我需要先去 <code>k8s-deployment.yaml</code> 文件中修改镜像标签，然后再次执行 <code>kubectl apply -f k8s-deployment.yaml</code>，这显然很是麻烦，所以我们可以 <code>kubectl set image deployment/nest-app nest-app=your-registry/nest-app:v2</code>，它做了三件事：</p>
